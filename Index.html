@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Приглашение с фото 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #efe6da;
+      --card: #faf6ef;
+      --card-inner: #f3ece0;
+      --text: #241f1c;
+      --muted: #7a6f66;
+      --accent: #df4d3b;
+      --sage: #9ab37e;
+      --sage-dark: #849d67;
+      --pill: #ebe2d3;
+      --border: #e2d6c5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100dvh;
+      background: radial-gradient(circle at top, #f7f0e6 0%, var(--bg) 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 410px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 26px 22px 24px;
+      box-shadow: 0 18px 40px rgba(62, 46, 32, 0.08);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 38px;
+      line-height: 1.05;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1 span {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .subtitle {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+
+    .photo-frame {
+      width: 100%;
+      height: 190px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--card-inner);
+      margin: 0 auto 16px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .photo-frame.has-photo img {
+      display: block;
+    }
+
+    .photo-placeholder {
+      padding: 14px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .photo-frame.has-photo .photo-placeholder {
+      display: none;
+    }
+
+    .arena {
+      position: relative;
+      min-height: 108px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 16px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-yes {
+      background: var(--sage);
+      color: #1f2618;
+      font-size: 18px;
+      padding: 14px 40px;
+      box-shadow: 0 8px 20px rgba(154, 179, 126, 0.38);
+      z-index: 2;
+    }
+
+    .btn-yes:hover {
+      background: var(--sage-dark);
+    }
+
+    .btn-no {
+      background: var(--card-inner);
+      color: var(--accent);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      z-index: 3;
+      transition: left 0.22s ease, top 0.22s ease, transform 0.15s ease;
+    }
+
+    .btn-red {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 15px;
+      padding: 15px 20px;
+      box-shadow: 0 8px 20px rgba(223, 77, 59, 0.28);
+      margin-top: 8px;
+    }
+
+    .btn-sage-full {
+      width: 100%;
+      background: var(--sage);
+      color: #1f2618;
+      font-size: 15px;
+      padding: 15px 20px;
+      box-shadow: 0 8px 20px rgba(154, 179, 126, 0.35);
+      margin-top: 12px;
+    }
+
+    .datetime-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      text-align: left;
+      margin: 14px 0 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 10px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .multi-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .plans-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .plan-chip {
+      background: var(--pill);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .plan-chip.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(223, 77, 59, 0.25);
+    }
+
+    .summary-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .summary-pill {
+      background: var(--pill);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .letter-box {
+      position: relative;
+      background: #fffdf9;
+      border: 1.5px dashed #d8cab6;
+      border-radius: 20px;
+      padding: 20px 18px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.58;
+      color: #2f2824;
+      margin-bottom: 12px;
+    }
+
+    .stamp {
+      position: absolute;
+      top: -12px;
+      left: 14px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .letter-box p + p {
+      margin-top: 9px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #241f1c;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 50;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .fx-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 40;
+    }
+
+    .particle {
+      position: absolute;
+      font-size: 20px;
+      animation: floatUp 1.8s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.7) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-180px) scale(1.2) rotate(25deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fx-layer" id="fxLayer"></div>
+
+  <main class="card">
+    <!-- ЭКРАН 1 -->
+    <section class="screen active" id="screen1">
+      <div class="eyebrow">МАЛЕНЬКИЙ ВОПРОС</div>
+      <h1>Пойдёшь со мной<br>на <span>свидание?</span></h1>
+      <p class="subtitle">Попробуй нажать «Нет», если сможешь 😉</p>
+
+      <div class="photo-frame" id="photoFrame">
+        <img id="invitePhoto" alt="Наше фото" />
+        <div class="photo-placeholder">
+          📸 Здесь будет ваше фото<br>
+          <span>Впиши ссылку в <code>photoUrl</code> в настройках</span>
+        </div>
+      </div>
+
+      <div class="arena" id="arena">
+        <button type="button" class="btn btn-yes" id="btnYes">ДА</button>
+        <button type="button" class="btn btn-no" id="btnNo">Нет</button>
+      </div>
+    </section>
+
+    <!-- ЭКРАН 2 -->
+    <section class="screen" id="screen2">
+      <div class="eyebrow">СВИДАНИЕ ПОДТВЕРЖДЕНО</div>
+      <h1>Ура — у нас <span>свидание.</span></h1>
+      <p class="subtitle">Видишь? Это было совсем не сложно 💛</p>
+      <button type="button" class="btn btn-red" id="btnToPlan">Теперь давай всё спланируем → 💌</button>
+    </section>
+
+    <!-- ЭКРАН 3 -->
+    <section class="screen" id="screen3">
+      <div class="eyebrow">СДЕЛАЕМ ВСЁ ОФИЦИАЛЬНО</div>
+      <h1>Выбери <span>день, время</span> и план</h1>
+
+      <div class="datetime-grid">
+        <div class="field">
+          <label for="dateInput">Какой день?</label>
+          <input type="date" id="dateInput" />
+        </div>
+        <div class="field">
+          <label for="timeInput">Во сколько?</label>
+          <input type="time" id="timeInput" value="19:00" />
+        </div>
+      </div>
+
+      <div class="section-label">План встречи</div>
+      <p class="multi-hint">Можно выбрать сразу несколько вариантов ✨</p>
+      <div class="plans-grid" id="plansGrid"></div>
+
+      <button type="button" class="btn btn-sage-full" id="btnConfirmPlan">Подтвердить день, время и план ✍️</button>
+    </section>
+
+    <!-- ЭКРАН 4 -->
+    <section class="screen" id="screen4">
+      <div class="eyebrow">НЕБОЛЬШОЕ ПИСЬМО ДЛЯ ТЕБЯ</div>
+      <div class="summary-pills" id="summaryPills"></div>
+
+      <div class="letter-box">
+        <div class="stamp">💌</div>
+        <p id="letterGreeting"></p>
+        <p>Итак... теперь это официально. У нас свидание! ✨</p>
+        <p id="letterDetails"></p>
+        <p id="letterPromise"></p>
+        <p>Уже не могу перестать улыбаться. До встречи!</p>
+        <p id="letterSign"></p>
+      </div>
+
+      <button type="button" class="btn btn-red" id="btnShare">Поделиться радостной новостью 💌</button>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const CONFIG = {
+      // Вставьте прямую ссылку на фото между кавычек, например: "https://example.com/photo.jpg"
+      photoUrl: "",
+      recipientGreeting: "Дорогая,",
+      promiseText: "Обещаю классную атмосферу, отличное настроение и самую лучшую компанию.",
+      signature: "Твой (немного волнующийся), — Я ❤️",
+      // Ник в Telegram без @ (например, "username") или оставьте пустым ""
+      telegramUsername: "",
+      plans: [
+        { icon: "☕", label: "Кофе" },
+        { icon: "🎬", label: "Кино" },
+        { icon: "🍝", label: "Ужин" },
+        { icon: "🌳", label: "Прогулка в парке" },
+        { icon: "🥂", label: "Напитки" },
+        { icon: "🏎️", label: "Картинг" },
+        { icon: "🎁", label: "Сюрприз" }
+      ]
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const photoFrame = document.getElementById("photoFrame");
+      const invitePhoto = document.getElementById("invitePhoto");
+
+      if (CONFIG.photoUrl && CONFIG.photoUrl.trim()) {
+        invitePhoto.src = CONFIG.photoUrl.trim();
+        invitePhoto.onload = () => photoFrame.classList.add("has-photo");
+      }
+
+      const screens = {
+        s1: document.getElementById("screen1"),
+        s2: document.getElementById("screen2"),
+        s3: document.getElementById("screen3"),
+        s4: document.getElementById("screen4")
+      };
+
+      const btnYes = document.getElementById("btnYes");
+      const btnNo = document.getElementById("btnNo");
+      const arena = document.getElementById("arena");
+      const btnToPlan = document.getElementById("btnToPlan");
+      const dateInput = document.getElementById("dateInput");
+      const timeInput = document.getElementById("timeInput");
+      const plansGrid = document.getElementById("plansGrid");
+      const btnConfirmPlan = document.getElementById("btnConfirmPlan");
+      const summaryPills = document.getElementById("summaryPills");
+      const btnShare = document.getElementById("btnShare");
+      const toast = document.getElementById("toast");
+      const fxLayer = document.getElementById("fxLayer");
+
+      const tomorrow = new Date(Date.now() + 86400000);
+      dateInput.value = tomorrow.toISOString().split("T")[0];
+
+      const selectedPlans = new Set(["Кофе"]);
+      CONFIG.plans.forEach((plan) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "plan-chip" + (selectedPlans.has(plan.label) ? " selected" : "");
+        chip.textContent = `${plan.icon} ${plan.label}`;
+        chip.addEventListener("click", () => {
+          if (selectedPlans.has(plan.label)) {
+            if (selectedPlans.size > 1) {
+              selectedPlans.delete(plan.label);
+              chip.classList.remove("selected");
+            } else {
+              showToast("Выбери хотя бы один вариант 🙂");
+            }
+          } else {
+            selectedPlans.add(plan.label);
+            chip.classList.add("selected");
+          }
+        });
+        plansGrid.appendChild(chip);
+      });
+
+      function showScreen(target) {
+        Object.values(screens).forEach((s) => s.classList.remove("active"));
+        target.classList.add("active");
+      }
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => toast.classList.remove("show"), 2600);
+      }
+
+      function burstParticles(symbols, count = 18) {
+        for (let i = 0; i < count; i++) {
+          const el = document.createElement("span");
+          el.className = "particle";
+          el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+          el.style.left = `${12 + Math.random() * 76}%`;
+          el.style.top = `${45 + Math.random() * 35}%`;
+          el.style.animationDelay = `${Math.random() * 0.35}s`;
+          fxLayer.appendChild(el);
+          setTimeout(() => el.remove(), 2200);
+        }
+      }
+
+      let dodgeCount = 0;
+      const noPhrases = ["Нет", "Точно нет?", "Не поймаешь!", "Подумай ещё 😜", "Ой, мимо!", "Жми «Да» 💚"];
+
+      function dodgeNo(e) {
+        if (e) e.preventDefault();
+        dodgeCount++;
+        btnNo.textContent = noPhrases[dodgeCount % noPhrases.length];
+
+        const arenaRect = arena.getBoundingClientRect();
+        const yesRect = btnYes.getBoundingClientRect();
+        const noRect = btnNo.getBoundingClientRect();
+
+        btnNo.style.position = "absolute";
+
+        let newLeft = 0;
+        let newTop = 0;
+        for (let attempt = 0; attempt < 15; attempt++) {
+          newLeft = Math.random() * Math.max(10, arenaRect.width - noRect.width);
+          newTop = Math.random() * Math.max(10, arenaRect.height - noRect.height);
+
+          const candLeft = arenaRect.left + newLeft;
+          const candTop = arenaRect.top + newTop;
+          const overlapsYes =
+            candLeft < yesRect.right + 10 &&
+            candLeft + noRect.width > yesRect.left - 10 &&
+            candTop < yesRect.bottom + 10 &&
+            candTop + noRect.height > yesRect.top - 10;
+
+          if (!overlapsYes) break;
+        }
+
+        btnNo.style.left = `${newLeft}px`;
+        btnNo.style.top = `${newTop}px`;
+      }
+
+      btnNo.addEventListener("mouseenter", dodgeNo);
+      btnNo.addEventListener("touchstart", dodgeNo, { passive: false });
+      btnNo.addEventListener("click", dodgeNo);
+
+      btnYes.addEventListener("click", () => {
+        showScreen(screens.s2);
+        burstParticles(["❤️", "💛", "💚", "💙", "💖"], 20);
+      });
+
+      btnToPlan.addEventListener("click", () => {
+        showScreen(screens.s3);
+      });
+
+      function formatRussianDate(isoDate) {
+        if (!isoDate) return "в ближайший день";
+        const [y, m, d] = isoDate.split("-").map(Number);
+        const dt = new Date(y, m - 1, d);
+        return dt.toLocaleDateString("ru-RU", {
+          weekday: "short",
+          day: "numeric",
+          month: "short"
+        });
+      }
+
+      let finalShareMessage = "";
+
+      btnConfirmPlan.addEventListener("click", () => {
+        const formattedDate = formatRussianDate(dateInput.value);
+        const chosenTime = timeInput.value || "19:00";
+        const chosenList = Array.from(selectedPlans);
+
+        summaryPills.innerHTML = "";
+        const datePill = document.createElement("span");
+        datePill.className = "summary-pill";
+        datePill.textContent = `📅 ${formattedDate}`;
+        summaryPills.appendChild(datePill);
+
+        const timePill = document.createElement("span");
+        timePill.className = "summary-pill";
+        timePill.textContent = `⏰ ${chosenTime}`;
+        summaryPills.appendChild(timePill);
+
+        chosenList.forEach((label) => {
+          const item = CONFIG.plans.find((p) => p.label === label);
+          const p = document.createElement("span");
+          p.className = "summary-pill";
+          p.textContent = `${item ? item.icon : "✨"} ${label}`;
+          summaryPills.appendChild(p);
+        });
+
+        const plansText = chosenList.map((l) => l.toLowerCase()).join(", ");
+        document.getElementById("letterGreeting").textContent = CONFIG.recipientGreeting;
+        document.getElementById("letterDetails").textContent =
+          `Давай встретимся (${formattedDate}) в ${chosenTime}. Наш план: ${plansText}.`;
+        document.getElementById("letterPromise").textContent = CONFIG.promiseText;
+        document.getElementById("letterSign").textContent = CONFIG.signature;
+
+        finalShareMessage =
+          `Я согласна на свидание! 💌\n📅 Дата: ${formattedDate}\n⏰ Время: ${chosenTime}\n✨ План: ${chosenList.join(", ")}`;
+
+        showScreen(screens.s4);
+        burstParticles(["🎉", "✨", "💌", "❤️", "🥂"], 24);
+      });
+
+      btnShare.addEventListener("click", async () => {
+        if (CONFIG.telegramUsername) {
+          const url = `https://t.me/${CONFIG.telegramUsername}?text=${encodeURIComponent(finalShareMessage)}`;
+          window.open(url, "_blank");
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(finalShareMessage);
+          showToast("Текст приглашения скопирован! Отправь его в чат 💌");
+        } catch {
+          showToast("Сделай скриншот или скопируй текст письма 💌");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
